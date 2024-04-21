@@ -1,0 +1,22 @@
+<template>
+  <ServiceGameList v-if="category" :title="category.name" menu="category" :type="category.key" />
+</template>
+
+<script setup>
+const route = useRoute()
+const category = ref(undefined)
+
+const get = async () => {
+  try {
+    const data = await useAPI('game/category/get', {
+      key: route.params.category
+    })
+    category.value = data
+  }
+  catch (e){
+
+  }
+}
+
+get()
+</script>
