@@ -1,5 +1,5 @@
 <template>
-  <UiContent title="Gate" sub="Quản lý các kênh nạp">
+  <UiContent title="Gate" sub="Quản lý các kênh thanh toán">
     <UiFlex class="mb-4">
       <USelectMenu v-model="page.size" :options="[5,10,20,50,100]" class="mr-auto"/>
       <UButton color="gray" @click="modal.add = true">Thêm mới</UButton>

@@ -3,7 +3,7 @@
     body: { padding: 'p-0 sm:p-0' },
     background: 'bg-gray-50 dark:bg-gray-800'
   }">
-    <div @click="navigateTo(`/news/${news.key}`)" class="cursor-pointer w-full">
+    <div @click="open(news.key)" class="cursor-pointer w-full">
       <UiImg 
         :src="news.og_image" 
         ratio="16 / 9"
@@ -33,6 +33,10 @@
 
 <script setup>
 const props = defineProps(['news'])
+
+const open = async (key) => {
+  await navigateTo(`/news/${key}`)
+}
 </script>
 
 <style lang="sass">
