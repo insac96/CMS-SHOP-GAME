@@ -90,7 +90,10 @@ export const DBGame = (mongoose : Mongoose) => {
     short_name: { type: String },
     key: { type: String },
     description: { type: String },
+
     og_image: { type: String },
+    images: [{ type: String }],
+    
     content: { type: String },
 
     price: { type: Number, index: true },

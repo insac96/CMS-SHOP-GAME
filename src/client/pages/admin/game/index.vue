@@ -95,12 +95,16 @@
           <UTextarea v-model="stateAdd.description" autoresize />
         </UFormGroup>
 
-        <UFormGroup label="Hình ảnh">
+        <UFormGroup label="Ảnh SEO">
           <UiUploadImage v-model="stateAdd.og_image">
             <template #default="{ select, loading }">
               <UInput :model-value="stateAdd.og_image" :loading="loading" readonly @click="select"/>
             </template>
           </UiUploadImage>
+        </UFormGroup>
+
+        <UFormGroup label="Hình ảnh">
+          <UiUploadImages v-model="stateAdd.images"></UiUploadImages>
         </UFormGroup>
 
         <UFormGroup label="Giá bán">
@@ -151,12 +155,16 @@
           <UTextarea v-model="stateEdit.description" autoresize />
         </UFormGroup>
 
-        <UFormGroup label="Hình ảnh">
+        <UFormGroup label="Ảnh SEO">
           <UiUploadImage v-model="stateEdit.og_image">
             <template #default="{ select, loading }">
               <UInput :model-value="stateEdit.og_image" :loading="loading" readonly @click="select"/>
             </template>
           </UiUploadImage>
+        </UFormGroup>
+
+        <UFormGroup label="Hình ảnh">
+          <UiUploadImages v-model="stateEdit.images"></UiUploadImages>
         </UFormGroup>
 
         <UFormGroup label="Giá bán">
@@ -270,6 +278,7 @@ const stateAdd = ref({
   short_name: null,
   description: null,
   og_image: null,
+  images: [],
   price: 0,
   discount: 0,
   pin: false,
@@ -284,6 +293,7 @@ const stateEdit = ref({
   short_name: null,
   description: null,
   og_image: null,
+  images: [],
   price: null,
   discount: null,
   pin: false,

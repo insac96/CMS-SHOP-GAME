@@ -22,6 +22,11 @@
           <UiText class="min-w-[200px] max-w-[200px] whitespace-normal">{{ row.title }}</UiText>
         </template>
 
+        <template #images-data="{ row }">
+          <UiImgs v-if="row.images && row.images.length > 0" :src="row.images" />
+          <span v-else>...</span>
+        </template>
+
         <template #pin-data="{ row }">
           <UBadge :color="row.pin == 1 ? 'green' : 'gray'" variant="soft">{{ row.pin == 1 ? 'Đã ghim' : 'Không' }}</UBadge>
         </template>
@@ -67,12 +72,16 @@
           <UTextarea v-model="stateAdd.description" autoresize />
         </UFormGroup>
 
-        <UFormGroup label="Hình ảnh">
+        <UFormGroup label="Ảnh SEO">
           <UiUploadImage v-model="stateAdd.og_image">
             <template #default="{ select, loading }">
               <UInput :model-value="stateAdd.og_image" :loading="loading" readonly @click="select"/>
             </template>
           </UiUploadImage>
+        </UFormGroup>
+
+        <UFormGroup label="Hình ảnh">
+          <UiUploadImages v-model="stateAdd.images"></UiUploadImages>
         </UFormGroup>
 
         <UFormGroup label="Hiển thị">
@@ -103,12 +112,16 @@
           <UTextarea v-model="stateEdit.description" autoresize />
         </UFormGroup>
 
-        <UFormGroup label="Hình ảnh">
+        <UFormGroup label="Ảnh SEO">
           <UiUploadImage v-model="stateEdit.og_image">
             <template #default="{ select, loading }">
               <UInput :model-value="stateEdit.og_image" :loading="loading" readonly @click="select"/>
             </template>
           </UiUploadImage>
+        </UFormGroup>
+
+        <UFormGroup label="Hình ảnh">
+          <UiUploadImages v-model="stateEdit.images"></UiUploadImages>
         </UFormGroup>
 
         <UFormGroup label="Hiển thị">
@@ -149,6 +162,9 @@ const columns = [
   },{
     key: 'category',
     label: 'Danh mục',
+  },{
+    key: 'images',
+    label: 'Hình ảnh',
   },{
     key: 'view',
     label: 'Lượt xem',
@@ -197,6 +213,7 @@ const stateAdd = ref({
   title: null,
   description: null,
   og_image: null,
+  images: [],
   pin: false,
   display: true
 })
@@ -206,6 +223,7 @@ const stateEdit = ref({
   title: null,
   description: null,
   og_image: null,
+  images: [],
   pin: null,
   display: null
 })
@@ -244,13 +262,14 @@ const actions = (row) => [
   [{
     label: 'Xem trực tiếp',
     icon: 'i-bx-link-external',
-    click: () => window.open(`/main/news/${row._id}`, '_blank')
+    click: () => window.open(`/news/${row.key}`, '_blank')
   }],
   [{
     label: 'Sửa thông tin',
     icon: 'i-bx-pencil',
     click: () => {
       Object.keys(stateEdit.value).forEach(key => stateEdit.value[key] = row[key])
+      stateEdit.value.images = JSON.parse(JSON.stringify(row.images))
       stateEdit.value.category = row.category._id
       modal.value.edit = true
     }

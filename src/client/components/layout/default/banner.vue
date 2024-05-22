@@ -1,6 +1,6 @@
 
 <template>
-  <div class="
+  <div v-if="banner" class="
     ServiceHomeBanner 
     relative 
     overflow-hidden
@@ -9,7 +9,7 @@
   ">
     <!-- Image -->
     <UiImg 
-      src="https://www.pixel4k.com/wp-content/uploads/2021/04/pubg-open-world-fight-4k_1618136794.jpg.webp"
+      :src="banner.config.image.og || '/images/default-banner.webp'"
       class="
         !absolute
         w-full h-full
@@ -45,32 +45,37 @@
         color="primary" 
         class="xl:text-5xl md:text-4xl text-2xl mb-2"
       >
-        ENI Shop
+        {{ banner.config.name || 'ENI Shop' }}
       </UiText>
 
       <!-- Description -->
       <UiText 
         weight="semibold" 
-        class="xl:text-2xl md:text-xl text-base text-white dark:text-gray-300 md:max-w-xl"
+        class="xl:text-2xl md:text-xl text-base text-gray-300 md:max-w-xl"
       >
-        Kênh bán game uy tín số 1 Việt Nam
+        {{ banner.config.description || 'Kênh bán game uy tín số 1 Việt Nam' }}
       </UiText>
       
       <!-- Statical -->
-      <UiFlex class="mt-6 space-x-8 text-white dark:text-gray-300">
+      <UiFlex class="mt-6 gap-8 text-gray-300" wrap>
         <div>
           <UiText size="sm">Trò chơi</UiText>
-          <UiText size="xl" weight="bold">10</UiText>
+          <UiText size="xl" weight="bold">{{ banner.game }}</UiText>
         </div>
 
         <div>
           <UiText size="sm">Thành viên</UiText>
-          <UiText size="xl" weight="bold">1.000</UiText>
+          <UiText size="xl" weight="bold">{{ banner.user }}</UiText>
+        </div>
+
+        <div>
+          <UiText size="sm">Đơn hàng</UiText>
+          <UiText size="xl" weight="bold">{{ banner.order }}</UiText>
         </div>
 
         <div>
           <UiText size="sm">Trực tuyến</UiText>
-          <UiText size="xl" weight="bold">500</UiText>
+          <UiText size="xl" weight="bold">{{ 149 }}</UiText>
         </div>
       </UiFlex>
 
@@ -79,6 +84,21 @@
     </UiFlex>
   </div>
 </template>
+
+<script setup>
+const banner = ref(undefined)
+
+const getBanner = async () => {
+  try {
+    const data = await useAPI('config/banner')
+    banner.value = data
+  }
+  catch (e){
+  }
+}
+
+getBanner()
+</script>
 
 <style lang="sass">
 .dark

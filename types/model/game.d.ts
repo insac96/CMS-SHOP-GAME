@@ -47,6 +47,8 @@ export interface IDBGame {
   key: string
   description: string
   og_image: string
+  images: Array<string>
+  
   content: string
 
   price: number

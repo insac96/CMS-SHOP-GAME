@@ -6,8 +6,9 @@ export default defineEventHandler(async (event) => {
     if(auth.type < 1) throw 'Bạn không phải quản trị viên'
 
     const body = await readBody(event)
-    const { category, title, description } = body
+    const { category, title, description, images } = body
     if(!category || !title || !description) throw 'Dữ liệu đầu vào không hợp lệ'
+    if(!Array.isArray(images)) throw 'Dữ liệu hình ảnh không hợp lệ'
 
     const categoryCheck = await DB.NewsCategory.findOne({ _id: category }).select('_id name')
     if(!categoryCheck) throw 'Danh mục không tồn tại'

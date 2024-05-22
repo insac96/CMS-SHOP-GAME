@@ -6,8 +6,9 @@ export default defineEventHandler(async (event) => {
     if(auth.type < 1) throw 'Bạn không phải quản trị viên'
 
     const body = await readBody(event)
-    const { _id, os, platform, category, name, short_name, description, price, discount } = body
+    const { _id, os, platform, category, name, short_name, description, images, price, discount } = body
     if(!_id || !category || !os || !platform || !name || !short_name || !description) throw 'Dữ liệu đầu vào không hợp lệ'
+    if(!Array.isArray(images)) throw 'Dữ liệu hình ảnh không hợp lệ'
     if(
       !!isNaN(parseInt(price))
       || parseInt(price) < 0

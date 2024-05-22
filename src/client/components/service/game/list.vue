@@ -10,7 +10,7 @@
     <UiEmpty v-if="list.length == 0" title="Hiện tại chưa có dữ liệu" />
 
     <div class="grid grid-cols-12 lg:gap-6 md:gap-4 gap-2 md:mb-6 mb-4" v-else>
-      <ServiceGameBox 
+      <ServiceGameBox
         v-for="game in list" :key="game._id" :game="game"
         class="xl:col-span-3 lg:col-span-4 col-span-6"
       />

@@ -50,7 +50,6 @@
 
     <!-- Modal Add -->
     <UModal v-model="modal.add" preventClose>
-      {{ stateAdd }}
       <UForm :state="stateAdd" @submit="addAction" class="p-4">
         <UFormGroup label="Loại">
           <SelectGateType v-model="stateAdd.type" />

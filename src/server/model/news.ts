@@ -19,16 +19,23 @@ export const DBNewsCategory = (mongoose : Mongoose) => {
 export const DBNews = (mongoose : Mongoose) => {
   const schema = new mongoose.Schema<IDBNews>({ 
     category: { type: mongoose.Schema.Types.ObjectId, ref: 'NewsCategory' },
+
     title: { type: String },
     key: { type: String },
     description: { type: String }, 
+
     og_image: { type: String },
+    images: [{ type: String }],
+
     keywords: [{ type: String }],
     content: { type: String },
+
     view: { type: Number, default: 0, index: true  },
     pin: { type: Boolean, default: true },
+
     creator: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
     updater: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
+    
     display: { type: Boolean, default: true },
   }, {
     timestamps: true

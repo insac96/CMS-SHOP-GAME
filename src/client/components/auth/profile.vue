@@ -1,53 +1,68 @@
 <template>
-  <UDropdown 
-    :items="menu" 
-    :ui="{ 
-      item: {
-        disabled: 'cursor-text select-text' } 
-    }" 
-    :popper="{ 
-      placement: 'bottom-end' 
-    }"
-  >
-    <UAvatar :src="authStore.profile.avatar" />
+  <UiFlex>
+    <UDropdown 
+      :items="menu" 
+      :ui="{ 
+        item: {
+          disabled: 'cursor-text select-text' } 
+      }" 
+      :popper="{ 
+        placement: 'bottom-end' 
+      }"
+    >
+      <UAvatar :src="authStore.profile.avatar" />
 
-    <template #account>
-      <div class="text-left">
-        <UiText color="gray" size="xs">Đăng nhập với tài khoản</UiText>
-        <UiText color="primary" weight="semibold" class="mt-0.5 capitalize">
-          {{ authStore.profile.username }}
-        </UiText>
-      </div>
-    </template>
+      <template #item="{ item }">
+        <UiText class="truncate">{{ item.label }}</UiText>
+        <UIcon :name="item.icon" class="flex-shrink-0 h-4 w-4 text-gray-400 dark:text-gray-500 ms-auto" />
+      </template>
+    </UDropdown>
 
-    <template #item="{ item }">
-      <UiText class="truncate">{{ item.label }}</UiText>
-      <UIcon :name="item.icon" class="flex-shrink-0 h-4 w-4 text-gray-400 dark:text-gray-500 ms-auto" />
-    </template>
-  </UDropdown>
+    <UModal v-model="modal.user" :ui="{ width: 'max-w-xl' }">
+      <!-- <ServiceOrderHistory /> -->
+    </UModal>
+
+    <UModal v-model="modal.history" :ui="{ width: 'lg:max-w-4xl md:max-w-2xl sm:max-w-xl' }">
+      <ServiceOrderHistory />
+    </UModal>
+  </UiFlex>
 </template>
 
 <script setup>
 const authStore = useAuthStore()
 
+const modal = ref({
+  history: false,
+  user: false
+})
+
 const menu = computed(() => {
-  const items = [
+  const listUser = [
     [{
-      slot: 'account',
-      disabled: true
+      label: 'Tài khoản',
+      icon: 'i-bx-user',
+      click: () => modal.value.user = true
     }],
     [{
+      label: 'Lịch sử',
+      icon: 'i-bx-history',
+      click: () => modal.value.history = true
+    },{
+      label: 'Đăng xuất',
+      icon: 'i-bx-log-in',
+      click: () => authStore.delAuth()
+    }]
+  ]
+  
+  if(authStore.profile.type > 0){
+    listUser.push([{
       label: 'Quản trị viên',
       icon: 'i-eos-icons-admin',
       disabled: authStore.profile?.type < 1 ? true : false,
       click: () => navigateTo('/admin')
-    },{
-      label: 'Đăng xuất',
-      icon: 'i-uis-signout',
-      click: () => authStore.delAuth()
-    }]
-  ]
+    }])
+  }
 
-  return items
+  return listUser
 })
 </script>

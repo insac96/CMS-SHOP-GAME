@@ -17,9 +17,9 @@
     </div>
 
     <!--Support-->
-    <!-- <div class="w-full p-2">
+    <div class="w-full p-2">
       <LayoutDefaultSupport />
-    </div> -->
+    </div>
   </UiFlex>
 </template>
 
