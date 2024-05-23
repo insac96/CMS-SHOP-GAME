@@ -69,7 +69,7 @@ const navItems = [
     slot: 'tab-2',
     children: [
       { label: 'Danh sách', to: '/admin/user' }, 
-      { label: 'Cấp độ', to: '/admin/user/level' },
+      { label: 'Nâng VIP', to: '/admin/user/vip' },
     ]
   },
   {

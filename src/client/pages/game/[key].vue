@@ -64,7 +64,7 @@
 
           <!-- Button -->
           <UiFlex justify="end" class="gap-0.5">
-            <UButton @click="modal.buy = true">Mua Ngay</UButton>
+            <UButton @click="buyAction()">Mua Ngay</UButton>
             <UButton @click="useNotify().error('Tính năng sắp ra mắt')" color="red">Nâng Cấp VIP</UButton>
           </UiFlex>
         </div>
@@ -88,6 +88,7 @@
 </template>
 
 <script setup>
+const authStore = useAuthStore()
 const route = useRoute()
 const loading = ref(false)
 const game = ref(undefined)
@@ -106,6 +107,16 @@ const slideList = computed(() => {
   }
   return game.value.images
 })
+
+const vipAction = () => {
+  if(!authStore.isLogin) return authStore.setModal(true)
+  modal.value.vip = true
+}
+
+const buyAction = () => {
+  if(!authStore.isLogin) return authStore.setModal(true)
+  modal.value.buy = true
+}
 
 const getGame = async () => {
   try {

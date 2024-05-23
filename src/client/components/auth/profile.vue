@@ -48,11 +48,11 @@ const menu = computed(() => {
     }])
   }
 
-  list.push([{
-    label: 'Tài khoản',
-    icon: 'i-bx-user',
-    click: () => modal.value.user = true
-  }])
+  // list.push([{
+  //   label: 'Tài khoản',
+  //   icon: 'i-bx-user',
+  //   click: () => modal.value.user = true
+  // }])
 
   list.push([{
     label: 'Lịch sử',
