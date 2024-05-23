@@ -9,7 +9,7 @@
         </UFormGroup>
 
         <UFormGroup label="Giá tiền" name="game">
-          <UInput :value="useMoney().toMoney(game.price)+' VNĐ'" readonly />
+          <UInput :value="useMoney().toMoney(game.price.member)+' VNĐ'" readonly />
         </UFormGroup>
 
         <UFormGroup label="Kênh mua" name="gate">
@@ -26,7 +26,7 @@
         <ServiceOrderView :fetch-id="order" class="p-4"/>
 
         <UiFlex justify="end" class="px-4 pb-4">
-          <UButton color="gray" @click="modal.view = false">Đóng</UButton>
+          <UButton color="gray" @click="modal.view = false, emits('done')">Đóng</UButton>
         </UiFlex>
       </UModal>
 
@@ -40,6 +40,7 @@
 <script setup>
 const authStore = useAuthStore()
 const props = defineProps(['game'])
+const emits = defineEmits(['done'])
 
 const form = ref()
 const loading = ref(false)

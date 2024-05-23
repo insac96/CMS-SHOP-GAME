@@ -8,6 +8,7 @@ export default defineEventHandler(async (event) => {
     .populate({ path: 'os', select: 'name key' })
     .populate({ path: 'platform', select: 'name key' })
     .populate({ path: 'category', select: 'name key' })
+    .select('-download')
     
     if(!game) throw 'Trò chơi không tồn tại'
     return res(event, { result: game })

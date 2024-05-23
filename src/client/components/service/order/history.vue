@@ -30,7 +30,7 @@
         </template>
 
         <template #game-data="{ row }">
-          <UBadge variant="soft" color="gray" class="cursor-pointer" @click="navigateTo(`/game/${row.game.key}`)">Xem</UBadge>
+          <UBadge variant="soft" color="gray" class="cursor-pointer" @click="viewGame(row.game.key)">Xem</UBadge>
         </template>
 
         <template #money-data="{ row }">
@@ -46,6 +46,12 @@
         <template #createdAt-data="{ row }">
           {{ useDayJs().displayFull(row.createdAt) }}
         </template>
+
+        <template #action-data="{ row }">
+          <UButton v-if="row.status == 0" color="gray" size="xs" @click="openUndo(row)">Hủy</UButton>
+          <UButton v-if="row.status == 1" size="xs" @click="downloadAction(row)">Tải Game</UButton>
+          <span v-if="row.status == 2">...</span>
+        </template>
       </UTable>
 
       <template #footer>
@@ -57,11 +63,29 @@
 
     <!-- Modal View -->
     <UModal v-model="modal.order" prevent-close>
-      <DataOrderView :fetch-id="stateOrder" class="p-4"/>
+      <ServiceOrderView :fetch-id="stateOrder" class="p-4"/>
 
       <UiFlex justify="end" class="px-4 pb-4">
         <UButton color="gray" @click="modal.order = false">Đóng</UButton>
       </UiFlex>
+    </UModal>
+
+    <!-- Modal Undo -->
+    <UModal v-model="modal.undo" prevent-close>
+      <UForm @submit="undoAction" class="p-4">
+        <UFormGroup label="Mã giao dịch">
+          <UInput :model-value="stateUndo.code" readonly />
+        </UFormGroup>
+
+        <UFormGroup label="Lý do hủy">
+          <UTextarea v-model="stateUndo.reason" />
+        </UFormGroup>
+
+        <UiFlex justify="end" class="mt-4">
+          <UButton type="submit" :loading="loading.undo">Xác nhận</UButton>
+          <UButton color="gray" @click="modal.undo = false" :disabled="loading.undo" class="ml-1">Đóng</UButton>
+        </UiFlex>
+      </UForm>
     </UModal>
   </div>
 </template>
@@ -75,10 +99,12 @@ const { toMoney } = useMoney()
 
 const loading = ref({
   load: true,
+  undo: false,
 })
 
 const modal = ref({
-  order: false
+  order: false,
+  undo: false,
 })
 
 const list = ref([])
@@ -102,9 +128,8 @@ const columns = [
     label: 'Trạng thái',
     sortable: true
   },{
-    key: 'createdAt',
-    label: 'Ngày tạo',
-    sortable: true
+    key: 'action',
+    label: 'Chức năng',
   }
 ]
 
@@ -147,12 +172,55 @@ const statusFormat = {
   2: { label: 'Từ chối', color: 'red' },
 }
 
-
 const stateOrder = ref(undefined)
+const stateUndo = ref({
+  _id: null,
+  code: null,
+  reason: null
+})
+
+const openUndo = (row) => {
+  stateUndo.value._id = row._id
+  stateUndo.value.code = row.code
+  modal.value.undo = true
+}
 
 const viewOrder = (_id) => {
   stateOrder.value = _id
   modal.value.order = true
+}
+
+const viewGame = (key) => {
+  window.open(`/game/${key}`, '_blank')
+}
+
+const downloadAction = async (row) => {
+  try {
+    loading.value.download = true
+    const link = await useAPI('game/download', {
+      game: row.game._id
+    })
+
+    loading.value.download = false
+    window.open(link, '_blank')
+  }
+  catch (e) {
+    loading.value.download = false
+  }
+}
+
+const undoAction = async () => {
+  try {
+    loading.value.undo = true
+    await useAPI('order/undo', JSON.parse(JSON.stringify(stateUndo.value)))
+
+    loading.value.undo = false
+    modal.value.undo = false
+    getList()
+  }
+  catch (e) {
+    loading.value.undo = false
+  }
 }
 
 const getList = async () => {

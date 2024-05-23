@@ -1,5 +1,5 @@
 import md5 from "md5"
-import type { IAuth, IDBConfig, IDBGame, IDBGate, IDBUser } from "~~/types"
+import type { IAuth, IDBGame, IDBGate, IDBOrder, IDBUser } from "~~/types"
 
 export default defineEventHandler(async (event) => {
   try {
@@ -20,9 +20,28 @@ export default defineEventHandler(async (event) => {
     // Check Game
     const gameSelect = await DB.Game
     .findOne({ _id: game }) 
-    .select('price order discount display') as IDBGame
+    .select('price order display') as IDBGame
     if(!gameSelect) throw 'Trò chơi không tồn tại'
     if(!gameSelect.display) throw 'Trò chơi đang chưa bày bán'
+
+    // Check Order
+    const hasOrderGameDone = await DB.Order
+    .findOne({ 
+      game: gameSelect._id,
+      user: auth._id,
+      status: 1
+    })
+    .select('_id') as IDBOrder
+    if(!!hasOrderGameDone) throw 'Bạn đã mua mã nguồn này, vui lòng vào phần lịch sử để tải về'
+
+    const hasOrderGameWait = await DB.Order
+    .findOne({ 
+      game: gameSelect._id,
+      user: auth._id,
+      status: 0
+    })
+    .select('_id') as IDBOrder
+    if(!!hasOrderGameWait) throw 'Đơn hàng cho mã nguồn này đã tồn tại, vui lòng thanh toán hoặc hủy đơn hàng và tạo lại'
 
     // Make Code, Token
     const countOrder = await DB.Order.count()
@@ -30,8 +49,10 @@ export default defineEventHandler(async (event) => {
     const code = prefix + (countOrder > 9 ? countOrder : `0${countOrder}`)
     const token = md5(`${code}-${Date.now()}`)
     
+    // Make Money
+    const money = gameSelect.price.member
+
     // Make QR
-    const money = gameSelect.price
     let qrcode
     if(!!gateSelect.qrcode){
       qrcode = gateSelect.qrcode

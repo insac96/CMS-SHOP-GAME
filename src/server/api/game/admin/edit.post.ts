@@ -6,17 +6,21 @@ export default defineEventHandler(async (event) => {
     if(auth.type < 1) throw 'Bạn không phải quản trị viên'
 
     const body = await readBody(event)
-    const { _id, os, platform, category, name, short_name, description, images, price, discount } = body
+    const { _id, os, platform, category, name, short_name, description, images, price } = body
     if(!_id || !category || !os || !platform || !name || !short_name || !description) throw 'Dữ liệu đầu vào không hợp lệ'
     if(!Array.isArray(images)) throw 'Dữ liệu hình ảnh không hợp lệ'
     if(
-      !!isNaN(parseInt(price))
-      || parseInt(price) < 0
-    ) throw 'Giá bán không hợp lệ'
+      !!isNaN(parseInt(price.member))
+      || parseInt(price.member) < 0
+    ) throw 'Giá bán thành viên không hợp lệ'
     if(
-      !!isNaN(parseInt(discount))
-      || parseInt(discount) < 0
-    ) throw 'Giảm giá không hợp lệ'
+      !!isNaN(parseInt(price.vip.month))
+      || parseInt(price.vip.month) < 0
+    ) throw 'Giá bán VIP Tháng không hợp lệ'
+    if(
+      !!isNaN(parseInt(price.vip.forever))
+      || parseInt(price.vip.forever) < 0
+    ) throw 'Giá bán VIP Vĩnh Viễn không hợp lệ'
 
     const gameCheck = await DB.Game.findOne({ _id: _id }).select('name')
     if(!gameCheck) throw 'Trò chơi không tồn tại'

@@ -31,7 +31,7 @@
         </template>
 
         <template #price-data="{ row }">
-          {{ useMoney().toMoney(row.price) }}
+          {{ useMoney().toMoney(row.price.member) }}
         </template>
 
         <template #discount-data="{ row }">
@@ -107,12 +107,16 @@
           <UiUploadImages v-model="stateAdd.images"></UiUploadImages>
         </UFormGroup>
 
-        <UFormGroup label="Giá bán">
-          <UInput v-model="stateAdd.price" type="number" />
+        <UFormGroup label="Giá bán Thành Viên">
+          <UInput v-model="stateAdd.price.member" type="number" />
         </UFormGroup>
 
-        <UFormGroup label="Giảm giá">
-          <UInput v-model="stateAdd.discount" type="number" />
+        <UFormGroup label="Giá bán VIP Tháng">
+          <UInput v-model="stateAdd.price.vip.month" type="number" />
+        </UFormGroup>
+
+        <UFormGroup label="Giá bán VIP Vĩnh Viễn">
+          <UInput v-model="stateAdd.price.vip.forever" type="number" />
         </UFormGroup>
 
         <UFormGroup label="Hiển thị">
@@ -167,12 +171,16 @@
           <UiUploadImages v-model="stateEdit.images"></UiUploadImages>
         </UFormGroup>
 
-        <UFormGroup label="Giá bán">
-          <UInput v-model="stateEdit.price" type="number" />
+        <UFormGroup label="Giá bán Thành Viên">
+          <UInput v-model="stateEdit.price.member" type="number" />
         </UFormGroup>
 
-        <UFormGroup label="Giảm giá">
-          <UInput v-model="stateEdit.discount" type="number" />
+        <UFormGroup label="Giá bán VIP Tháng">
+          <UInput v-model="stateEdit.price.vip.month" type="number" />
+        </UFormGroup>
+
+        <UFormGroup label="Giá bán VIP Vĩnh Viễn">
+          <UInput v-model="stateEdit.price.vip.forever" type="number" />
         </UFormGroup>
 
         <UFormGroup label="Hiển thị">
@@ -195,6 +203,20 @@
         <UiFlex justify="end" class="mt-4">
           <UButton type="submit" :loading="loading.content">Lưu</UButton>
           <UButton color="gray" @click="modal.content = false" :disabled="loading.content" class="ml-1">Đóng</UButton>
+        </UiFlex>
+      </UForm>
+    </UModal>
+
+    <!-- Modal Download -->
+    <UModal v-model="modal.download" preventClose>
+      <UForm :state="stateDownload" @submit="downloadAction" class="p-4">
+        <UFormGroup label="Link tải">
+          <UInput v-model="stateDownload.download" />
+        </UFormGroup>
+
+        <UiFlex justify="end" class="mt-4">
+          <UButton type="submit" :loading="loading.download">Lưu</UButton>
+          <UButton color="gray" @click="modal.download = false" :disabled="loading.download" class="ml-1">Đóng</UButton>
         </UiFlex>
       </UForm>
     </UModal>
@@ -222,10 +244,6 @@ const columns = [
   },{
     key: 'price',
     label: 'Giá bán',
-    sortable: true
-  },{
-    key: 'discount',
-    label: 'Giảm giá',
     sortable: true
   },{
     key: 'view',
@@ -279,11 +297,17 @@ const stateAdd = ref({
   description: null,
   og_image: null,
   images: [],
-  price: 0,
-  discount: 0,
+  price: {
+    member: 0,
+    vip: {
+      month: 0,
+      forever: 0,
+    }
+  },
   pin: false,
   display: true
 })
+
 const stateEdit = ref({
   _id: null,
   os: null,
@@ -294,21 +318,33 @@ const stateEdit = ref({
   description: null,
   og_image: null,
   images: [],
-  price: null,
-  discount: null,
+  price: {
+    member: 0,
+    vip: {
+      month: 0,
+      forever: 0,
+    }
+  },
   pin: false,
   display: true
 })
+
 const stateContent = ref({
   _id: null,
   content: null
+})
+
+const stateDownload = ref({
+  _id: null,
+  download: null
 })
 
 // Modal
 const modal = ref({
   add: false,
   edit: false,
-  content: false
+  content: false,
+  download: false
 })
 
 watch(() => modal.value.add, (val) => !val && (stateAdd.value = {
@@ -319,8 +355,13 @@ watch(() => modal.value.add, (val) => !val && (stateAdd.value = {
   short_name: null,
   description: null,
   og_image: null,
-  price: 0,
-  discount: 0,
+  price: {
+    member: 0,
+    vip: {
+      month: 0,
+      forever: 0,
+    }
+  },
   pin: false,
   display: true
 }))
@@ -331,7 +372,8 @@ const loading = ref({
   add: false,
   edit: false,
   del: false,
-  content: false
+  content: false,
+  download: false
 })
 
 // Actions
@@ -347,6 +389,8 @@ const actions = (row) => [
     click: () => {
       Object.keys(stateEdit.value).forEach(key => stateEdit.value[key] = row[key])
       stateEdit.value.category = row.category._id
+      stateEdit.value.os = row.os._id
+      stateEdit.value.platform = row.platform._id
       modal.value.edit = true
     }
   },{
@@ -362,6 +406,13 @@ const actions = (row) => [
       catch (e) {
         return
       }
+    }
+  },{
+    label: 'Sửa link tải',
+    icon: 'i-bx-download',
+    click: async () => {
+      Object.keys(stateDownload.value).forEach(key => stateDownload.value[key] = row[key])
+      modal.value.download = true
     }
   }],[{
     label: 'Xóa trò chơi',
@@ -436,6 +487,19 @@ const contentAction = async () => {
   }
   catch (e) {
     loading.value.content = false
+  }
+}
+
+const downloadAction = async () => {
+  try {
+    loading.value.download = true
+    await useAPI('game/admin/download/edit', JSON.parse(JSON.stringify(stateDownload.value)))
+
+    loading.value.download = false
+    modal.value.download = false
+  }
+  catch (e) {
+    loading.value.download = false
   }
 } 
 

@@ -7,7 +7,7 @@
       <div class="grid grid-cols-12 gap-4 mb-4">
         <!-- Left -->
         <div class="lg:col-span-7 col-span-12">
-          <UiSlide :images="game.images" />
+          <UiSlide :images="slideList" />
         </div>
         
         <!-- Right -->
@@ -48,17 +48,17 @@
 
             <UiFlex justify="between" class="mb-4">
               <UiText size="sm" color="gray">Thành viên</UiText>
-              <UiText size="sm" weight="semibold">{{ useMoney().toMoney(game.price) }}đ</UiText>
+              <UiText size="sm" weight="semibold">{{ useMoney().toMoney(game.price.member) }}đ</UiText>
             </UiFlex>
 
             <UiFlex justify="between" class="mb-4">
               <UiText size="sm" color="gray">VIP tháng</UiText>
-              <UiText size="sm" weight="semibold">...</UiText>
+              <UiText size="sm" weight="semibold">{{ useMoney().toMoney(game.price.vip.month) }}đ</UiText>
             </UiFlex>
 
             <UiFlex justify="between" class="mb-4">
               <UiText size="sm" color="gray">VIP trọn đời</UiText>
-              <UiText size="sm" color="red" weight="semibold">...</UiText>
+              <UiText size="sm" color="red" weight="semibold">{{ useMoney().toMoney(game.price.vip.forever) }}đ</UiText>
             </UiFlex>
           </div>
 
@@ -81,7 +81,7 @@
 
     <UModal v-model="modal.buy">
       <div class="m-4">
-        <ServiceOrderBuy :game="game"></ServiceOrderBuy>
+        <ServiceOrderBuy :game="game" @done="modal.buy = false"></ServiceOrderBuy>
       </div>
     </UModal>
   </div>
@@ -95,6 +95,16 @@ const game = ref(undefined)
 const modal = ref({
   buy: false,
   vip: false
+})
+
+const slideList = computed(() => {
+  if(!game.value) return []
+  if(game.value.images.length == 0) {
+    const l = []
+    l.push(game.value.og_image)
+    return l
+  }
+  return game.value.images
 })
 
 const getGame = async () => {

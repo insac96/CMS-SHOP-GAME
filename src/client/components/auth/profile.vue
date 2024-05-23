@@ -37,25 +37,10 @@ const modal = ref({
 })
 
 const menu = computed(() => {
-  const listUser = [
-    [{
-      label: 'Tài khoản',
-      icon: 'i-bx-user',
-      click: () => modal.value.user = true
-    }],
-    [{
-      label: 'Lịch sử',
-      icon: 'i-bx-history',
-      click: () => modal.value.history = true
-    },{
-      label: 'Đăng xuất',
-      icon: 'i-bx-log-in',
-      click: () => authStore.delAuth()
-    }]
-  ]
+  const list = []
   
   if(authStore.profile.type > 0){
-    listUser.push([{
+    list.push([{
       label: 'Quản trị viên',
       icon: 'i-eos-icons-admin',
       disabled: authStore.profile?.type < 1 ? true : false,
@@ -63,6 +48,22 @@ const menu = computed(() => {
     }])
   }
 
-  return listUser
+  list.push([{
+    label: 'Tài khoản',
+    icon: 'i-bx-user',
+    click: () => modal.value.user = true
+  }])
+
+  list.push([{
+    label: 'Lịch sử',
+    icon: 'i-bx-history',
+    click: () => modal.value.history = true
+  },{
+    label: 'Đăng xuất',
+    icon: 'i-bx-log-in',
+    click: () => authStore.delAuth()
+  }])
+
+  return list
 })
 </script>

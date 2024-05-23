@@ -51,8 +51,15 @@ export interface IDBGame {
   
   content: string
 
-  price: number
-  discount: number
+  price: {
+    member: number
+    vip: {
+      month: number
+      forever: number
+    }
+  }
+
+  download: string
 
   view: number
   order: number

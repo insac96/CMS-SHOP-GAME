@@ -8,8 +8,8 @@ export default defineEventHandler(async (event) => {
     const { _id, content } = await readBody(event)
     if(!_id || !content) throw 'Dữ liệu đầu vào không đủ'
 
-    const news = await DB.Game.findOne({ _id: _id }).select('title')
-    if(!news) throw 'Tin tức không tồn tại'
+    const game = await DB.Game.findOne({ _id: _id }).select('name')
+    if(!game) throw 'Tin tức không tồn tại'
 
     await DB.Game.updateOne({ 
       _id: _id 
@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
       updater: auth._id 
     })
 
-    logAdmin(event, `Cập nhật nội dung trò chơi <b>${news.title}</b>`)
+    logAdmin(event, `Cập nhật nội dung trò chơi <b>${game.name}</b>`)
 
     return res(event, { message: 'Cập nhật thành công' })
   } 

@@ -96,8 +96,15 @@ export const DBGame = (mongoose : Mongoose) => {
     
     content: { type: String },
 
-    price: { type: Number, index: true },
-    discount: { type: Number, index: true, default: 0 },
+    price: {
+      member: { type: Number, index: true },
+      vip: {
+        month: { type: Number, index: true },
+        forever: { type: Number, index: true },
+      }
+    },
+
+    download: { type: String },
 
     view: { type: Number, index: true, default: 0 },
     order: { type: Number, index: true, default: 0 },

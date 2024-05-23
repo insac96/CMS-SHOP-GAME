@@ -8,12 +8,12 @@ export default defineEventHandler(async (event) => {
     const { _id } = await readBody(event)
     if(!_id) throw 'Dữ liệu đầu vào không đủ'
 
-    const news = await DB.Game
+    const game = await DB.Game
     .findOne({ _id: _id })
     .select('content') 
 
-    if(!news) throw 'Trò chơi không tồn tại'
-    return res(event, { result: news.content })
+    if(!game) throw 'Trò chơi không tồn tại'
+    return res(event, { result: game.content })
   } 
   catch (e:any) {
     return res(event, { code: 400, message: e.toString() })
