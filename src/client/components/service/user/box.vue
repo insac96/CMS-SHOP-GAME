@@ -36,7 +36,7 @@
 
 <script setup>
 const authStore = useAuthStore()
-const user = ref(undefined)
+const user = computed(() => authStore.profile)
 
 const typeFormat = {
   0: { label: 'MEMBER', color: 'gray' },
@@ -57,10 +57,4 @@ const vipFormat = computed(() => {
   }
   return null
 })
-
-
-const getData = async () => {
-  user.value = authStore.profile
-}
-getData()
 </script>
