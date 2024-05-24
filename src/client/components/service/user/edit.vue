@@ -1,12 +1,12 @@
 <template>
   <UCard v-if="state">
     <UForm :state="state">
-      <UFormGroup label="Hòm thư (Email)">
-        <UInput v-model="state.email" :disabled="!!state.email" />
+      <UFormGroup label="Hòm thư (Email)" v-if="!authStore.profile.email">
+        <UInput v-model="state.email" />
       </UFormGroup>
 
-      <UFormGroup label="Số điện thoại">
-        <UInput v-model="state.phone" :disabled="!!state.phone" />
+      <UFormGroup label="Số điện thoại" v-if="!authStore.profile.phone">
+        <UInput v-model="state.phone" />
       </UFormGroup>
 
       <UFormGroup label="Ảnh đại diện">
