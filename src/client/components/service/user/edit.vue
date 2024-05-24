@@ -1,12 +1,12 @@
 <template>
   <UCard v-if="state">
     <UForm :state="state">
-      <UFormGroup label="Hòm thư (Email)" v-if="!state.email">
-        <UInput v-model="state.email" />
+      <UFormGroup label="Hòm thư (Email)">
+        <UInput v-model="state.email" :disabled="!!state.email" />
       </UFormGroup>
 
-      <UFormGroup label="Số điện thoại" v-if="!state.phone">
-        <UInput v-model="state.phone" />
+      <UFormGroup label="Số điện thoại">
+        <UInput v-model="state.phone" :disabled="!!state.phone" />
       </UFormGroup>
 
       <UFormGroup label="Ảnh đại diện">
@@ -45,7 +45,7 @@ const authStore = useAuthStore()
 
 const loading = ref(false)
 
-const state = ref(authStore.profile)
+const state = ref(JSON.parse(JSON.stringify(authStore.profile)))
 
 const submit = async () => {
   try {
