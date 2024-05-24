@@ -35,7 +35,7 @@
           <UiText size="xs">{{ game.order || 0 }}</UiText>
         </UiFlex>
 
-        <UiText size="sm" color="primary" weight="semibold" class="ml-auto">{{  useMoney().toMoney(game.price) }}đ</UiText>
+        <UiText size="sm" color="primary" weight="semibold" class="ml-auto">{{  useMoney().toMoney(game.price.member) }}đ</UiText>
       </UiFlex>
     </template>
   </UCard>

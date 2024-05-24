@@ -30,9 +30,9 @@ const getMenuGame = async () => {
       icon: 'i-bxs-news',
       click: () => navigateTo('/news')
     },{
-      label: 'Nâng cấp VIP',
+      label: 'Nâng VIP',
       icon: 'i-mdi-event-star',
-      click: () => useNotify().error('Tính năng sắp ra mắt')
+      click: () => navigateTo('/vip/upgrade')
     }]
   },{
     name: 'Hệ Điều Hành',

@@ -126,6 +126,32 @@
         </UCard>
       </template>
 
+      <template #vip>
+        <UCard>
+          <UForm :state="state">
+            <UFormGroup label="Giá mua VIP Tháng">
+              <UInput v-model="state.vip.month" type="number" />
+            </UFormGroup>
+
+            <UFormGroup label="Giá mua VIP Tháng">
+              <UInput v-model="state.vip.quarter" type="number" />
+            </UFormGroup>
+
+            <UFormGroup label="Giá mua VIP Tháng">
+              <UInput v-model="state.vip.year" type="number" />
+            </UFormGroup>
+
+            <UFormGroup label="Giá mua VIP Trọn Đời">
+              <UInput v-model="state.vip.forever" type="number" />
+            </UFormGroup>
+
+            <UiFlex justify="end" class="mt-4">
+              <UButton @click="update('vip')" :loading="updating">Cập nhật</UButton>
+            </UiFlex>
+          </UForm>
+        </UCard>
+      </template>
+
       <template #facebook>
         <UCard>
           <UForm :state="state">
@@ -243,6 +269,13 @@ const state = ref({
     logo: '',
   },
 
+  vip: {
+    month: '',
+    quarter: '',
+    year: '',
+    forever: '',
+  },
+
   contact: {
     name: '',
     phone: '',
@@ -300,6 +333,10 @@ const menu = [
 {
   label: 'Mạng xã hội',
   slot: 'social'
+},
+{
+  label: 'Giá VIP',
+  slot: 'vip'
 },
 {
   label: 'Facebook',

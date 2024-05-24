@@ -9,7 +9,7 @@
       </template>
       
       <template #description>
-        <UButton color="gray" size="xs" block class="mt-2" :loading="loading" @click="get">Liên Hệ Chúng Tôi</UButton>
+        <UButton color="gray" size="xs" block class="mt-2" @click="modal = true">Liên Hệ Chúng Tôi</UButton>
       </template>
     </UAlert>
 
@@ -55,43 +55,13 @@
 </template>
 
 <script setup>
-const loading = ref(false)
-
+const configStore = useConfigStore()
+const contact = ref(configStore.config.contact)
+const social = ref(configStore.config.social)
 const modal = ref(false)
-
-const contact = ref({
-  name: null,
-  phone: null,
-  email: null,
-  address: null
-})
-
-const social = ref({
-  fanpage: null,
-  group: null,
-  messenger: null,
-  zalo: null,
-  tiktok: null,
-  telegram: null,
-})
 
 const open = (url) => {
   if(!url) return useNotify().error('Chúng tôi đang cập nhật thông tin, vui lòng quay lại sau')
   window.open(url, '_blank')
-}
-
-const get = async () => {
-  try {
-    loading.value = true
-    const data = await useAPI('config/contact')
-
-    contact.value = Object.assign(contact.value, data.contact)
-    social.value = Object.assign(social.value, data.social)
-    loading.value = false
-    modal.value = true
-  }
-  catch (e) {
-    loading.value = false
-  }
 }
 </script>

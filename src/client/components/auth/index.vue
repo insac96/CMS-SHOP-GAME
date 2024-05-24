@@ -4,7 +4,7 @@
     <UButton size="md" aria-label="Login" v-if="!authStore.isLogin" @click="authStore.setModal(true)">Đăng Nhập</UButton>
     
     <!--Is Login -->
-    <AuthProfile v-if="!!authStore.isLogin" />
+    <AuthSign v-if="!!authStore.isLogin" />
   </UiFlex>
 </template>
 

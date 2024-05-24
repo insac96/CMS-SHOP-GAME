@@ -16,6 +16,13 @@ export const DBConfig = (mongoose : Mongoose) => {
     privacy: { type: String },
     terms: { type: String },
 
+    vip: {
+      month: { type: Number, default: 500000 },
+      quarter : { type: Number, default: 1500000 },
+      year: { type: Number, default: 6000000 },
+      forever: { type: Number, default: 10000000 },
+    },
+
     contact: {
       name: { type: String, default: '' },
       phone: { type: String, default: '' },

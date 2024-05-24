@@ -26,33 +26,9 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    const list = await DB.Order
+    const list = await DB.UpgradeVIP
     .aggregate([
       { $match: match },
-      {
-        $lookup: {
-          from: "Gate",
-          localField: "gate",
-          foreignField: "_id",
-          pipeline: [{
-            $project: { name: 1, color: 1, type: 1 }
-          }],
-          as: "gate"
-        }
-      },
-      { $unwind: { path: "$gate", preserveNullAndEmptyArrays: true }},
-      {
-        $lookup: {
-          from: "Game",
-          localField: "game",
-          foreignField: "_id",
-          pipeline: [{
-            $project: { name: 1, key: 1 }
-          }],
-          as: "game"
-        }
-      },
-      { $unwind: { path: "$game", preserveNullAndEmptyArrays: true }},
       {
         $lookup: {
           from: "User",
@@ -78,13 +54,13 @@ export default defineEventHandler(async (event) => {
       },
       { $unwind: { path: "$verify_person", preserveNullAndEmptyArrays: true }},
       { $addFields: { "verify_time": "$verify.time" } },
-      { $project: { card: 0, qrcode: 0, token: 0, verify: 0, updatedAt: 0 } },
+      { $project: { qrcode: 0, token: 0, verify: 0, updatedAt: 0 } },
       { $sort: sorting },
       { $skip: (current - 1) * size },
       { $limit: size }
     ])
 
-    const total = await DB.Order.count(match)
+    const total = await DB.UpgradeVIP.count(match)
     return res(event, { result: { list, total } })
   } 
   catch (e:any) {

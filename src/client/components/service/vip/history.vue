@@ -29,8 +29,10 @@
           <UBadge variant="soft" color="gray">{{ row.gate.name }}</UBadge>
         </template>
 
-        <template #game-data="{ row }">
-          <UBadge variant="soft" color="gray" class="cursor-pointer" @click="viewGame(row.game.key)">Xem</UBadge>
+        <template #vip-data="{ row }">
+          <UBadge :color="vipFormat[row.vip].color" variant="soft">
+            {{ vipFormat[row.vip].label }}
+          </UBadge>
         </template>
 
         <template #money-data="{ row }">
@@ -49,8 +51,7 @@
 
         <template #action-data="{ row }">
           <UButton v-if="row.status == 0" color="gray" size="xs" @click="openUndo(row)">Hủy</UButton>
-          <UButton v-if="row.status == 1" size="xs" @click="downloadAction(row)">Tải Game</UButton>
-          <span v-if="row.status == 2">...</span>
+          <span v-else>...</span>
         </template>
       </UTable>
 
@@ -63,7 +64,7 @@
 
     <!-- Modal View -->
     <UModal v-model="modal.order" prevent-close>
-      <ServiceOrderView :fetch-id="stateOrder" class="p-4"/>
+      <ServiceVipView :fetch-id="stateOrder" class="p-4"/>
 
       <UiFlex justify="end" class="px-4 pb-4">
         <UButton color="gray" @click="modal.order = false">Đóng</UButton>
@@ -117,8 +118,8 @@ const columns = [
     key: 'gate',
     label: 'Kênh',
   },{
-    key: 'game',
-    label: 'Trò chơi',
+    key: 'vip',
+    label: 'Loại VIP',
   },{
     key: 'money',
     label: 'Số tiền',
@@ -171,10 +172,17 @@ const statusFormat = {
   1: { label: 'Thành công', color: 'green' },
   2: { label: 'Từ chối', color: 'red' },
 }
+const vipFormat = {
+  month: { label: 'Tháng', color: 'rose' },
+  quarter: { label: 'Quý', color: 'lime' },
+  year: { label: 'Năm', color: 'orange' },
+  forever: { label: 'Trọn đời', color: 'sky' },
+}
 
 const stateOrder = ref(undefined)
 const stateUndo = ref({
   _id: null,
+  vip: null,
   code: null,
   reason: null
 })
@@ -190,29 +198,10 @@ const viewOrder = (_id) => {
   modal.value.order = true
 }
 
-const viewGame = (key) => {
-  window.open(`/game/${key}`, '_blank')
-}
-
-const downloadAction = async (row) => {
-  try {
-    loading.value.download = true
-    const link = await useAPI('game/download', {
-      game: row.game._id
-    })
-
-    loading.value.download = false
-    window.open(link, '_blank')
-  }
-  catch (e) {
-    loading.value.download = false
-  }
-}
-
 const undoAction = async () => {
   try {
     loading.value.undo = true
-    await useAPI('order/undo', JSON.parse(JSON.stringify(stateUndo.value)))
+    await useAPI('vip/undo', JSON.parse(JSON.stringify(stateUndo.value)))
 
     loading.value.undo = false
     modal.value.undo = false
@@ -226,7 +215,7 @@ const undoAction = async () => {
 const getList = async () => {
   try {
     loading.value.load = true
-    const data = await useAPI('order/history', JSON.parse(JSON.stringify(page.value)))
+    const data = await useAPI('vip/history', JSON.parse(JSON.stringify(page.value)))
 
     loading.value.load = false
     list.value = data.list

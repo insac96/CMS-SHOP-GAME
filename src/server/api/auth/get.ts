@@ -28,8 +28,12 @@ export default defineEventHandler(async (event) => {
     const userStore : IDBUserStore = {
       _id: user._id,
       username: user.username,
+      email: user.email,
+      phone: user.phone,
       avatar: user.avatar,
-      type: user.type
+      type: user.type,
+      social: user.social,
+      vip: user.vip
     }
 
     return res(event, { result: userStore })

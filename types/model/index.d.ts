@@ -1,6 +1,6 @@
 import type { Model } from 'mongoose'
 export { IDBConfig, IDBConfigStore } from './config'
-export { IDBUser, IDBUserStore } from './user'
+export { IDBUser, IDBUserStore, IDBUpgradeVIP } from './user'
 export { IDBNews, IDBNewsCategory } from './news'
 export { IDBSpend } from './spend'
 export { IDBGate } from './gate'
@@ -21,6 +21,8 @@ export interface IGlobalDB {
   Gate: Model<IDBGate>
 
   Order: Model<IDBOrder>
+
+  UpgradeVIP: Model<IDBUpgradeVIP>
 
   GameOS: Model<IDBGameOS>
   GamePlatform: Model<IDBGamePlatform>

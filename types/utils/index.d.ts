@@ -1,9 +1,11 @@
 import { Types } from 'mongoose'
+import type { IDBUser } from '../model'
 
 export interface IAuth {
   _id: Types.ObjectId
   username: string
   type: number
+  vip: IDBUser['vip']
 }
 
 export interface IRes {

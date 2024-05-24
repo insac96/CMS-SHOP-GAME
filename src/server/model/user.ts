@@ -1,5 +1,5 @@
 import type { Mongoose } from 'mongoose'
-import type { IDBUser } from '~~/types'
+import type { IDBUser, IDBUpgradeVIP } from '~~/types'
 import md5 from 'md5'
 
 export const DBUser = (mongoose : Mongoose) => {
@@ -9,6 +9,17 @@ export const DBUser = (mongoose : Mongoose) => {
     email: { type: String },
     phone: { type: String },
     avatar: { type: String, default: '/images/user/default.png' },
+
+    vip: {
+      month: {
+        enable: { type: Boolean, default: false },
+        end: { type: Date }
+      },
+      forever: {
+        enable: { type: Boolean, default: false },
+        end: { type: Date }
+      }
+    },
 
     social: {
       facebook: { type: String },
@@ -47,4 +58,33 @@ export const DBUser = (mongoose : Mongoose) => {
   autoCreate()
   
   return model
+}
+
+export const DBUpgradeVIP = (mongoose : Mongoose) => {
+  const schema = new mongoose.Schema<IDBUpgradeVIP>({ 
+    gate: { type: mongoose.Schema.Types.ObjectId, ref: 'Gate' },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    vip: { type: String }, 
+
+    money: { type: Number, index: true },
+
+    code: { type: String }, 
+    token: { type: String },
+    qrcode: { type: String },
+
+    status: { type: Number, default: 0, index: true }, // 0-Wait 1-Success 2-Refuse,
+
+    verify: {
+      person: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
+      time: { type: Date },
+      reason: { type: String },
+    }
+  }, {
+    timestamps: true
+  })
+
+  schema.index({ code: 'text' })
+
+  const model = mongoose.model('UpgradeVIP', schema, 'UpgradeVIP')
+  return model 
 }

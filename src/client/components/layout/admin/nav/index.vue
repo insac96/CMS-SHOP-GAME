@@ -37,7 +37,6 @@
 </template>
 
 <script setup>
-const runtimeConfig = useRuntimeConfig()
 const emit = defineEmits(['to'])
 const navItems = [
   {
@@ -47,7 +46,7 @@ const navItems = [
     slot: 'tab-0',
     children: [
       { label: 'Chi tiêu', to: '/admin/spend' },
-      { label: 'Thanh toán', to: '/admin/gate' }, 
+      { label: 'Kênh thanh toán', to: '/admin/gate' }, 
       { label: 'Đơn hàng', to: '/admin/order' }, 
       { label: 'Cài đặt', to: '/admin/config' },
     ]
@@ -85,8 +84,4 @@ const navItems = [
     ]
   }
 ]
-
-const openLink = (link) => {
-  window.location.href = link
-}
 </script>

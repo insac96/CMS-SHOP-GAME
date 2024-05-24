@@ -17,14 +17,23 @@ export const useConfigStore = defineStore('config', () => {
       phone: '',
       email: '',
       address: '',
-      prefix: ''
+      prefix: '',
     },
-
+  
     social: {
-      facebook: '',
+      fanpage: '',
+      group: '',
       messenger: '',
       zalo: '',
+      tiktok: '',
       telegram: '',
+    },
+  
+    vip: {
+      month: 0,
+      quarter : 0,
+      year: 0,
+      forever: 0
     },
 
     facebook: {

@@ -64,8 +64,8 @@
 
           <!-- Button -->
           <UiFlex justify="end" class="gap-0.5">
-            <UButton @click="buyAction()">Mua Ngay</UButton>
-            <UButton @click="useNotify().error('Tính năng sắp ra mắt')" color="red">Nâng Cấp VIP</UButton>
+            <UButton @click="buyAction">Mua Ngay</UButton>
+            <UButton @click="vipAction" color="red">Nâng Cấp VIP</UButton>
           </UiFlex>
         </div>
       </div>
@@ -109,8 +109,7 @@ const slideList = computed(() => {
 })
 
 const vipAction = () => {
-  if(!authStore.isLogin) return authStore.setModal(true)
-  modal.value.vip = true
+  navigateTo('/vip/upgrade')
 }
 
 const buyAction = () => {

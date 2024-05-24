@@ -18,11 +18,7 @@
       </template>
     </UDropdown>
 
-    <UModal v-model="modal.user" :ui="{ width: 'max-w-xl' }">
-      <!-- <ServiceOrderHistory /> -->
-    </UModal>
-
-    <UModal v-model="modal.history" :ui="{ width: 'lg:max-w-4xl md:max-w-2xl sm:max-w-xl' }">
+    <UModal v-model="modal.order" :ui="{ width: 'lg:max-w-4xl md:max-w-2xl sm:max-w-xl' }">
       <ServiceOrderHistory />
     </UModal>
   </UiFlex>
@@ -32,8 +28,7 @@
 const authStore = useAuthStore()
 
 const modal = ref({
-  history: false,
-  user: false
+  order: false
 })
 
 const menu = computed(() => {
@@ -48,16 +43,16 @@ const menu = computed(() => {
     }])
   }
 
-  // list.push([{
-  //   label: 'Tài khoản',
-  //   icon: 'i-bx-user',
-  //   click: () => modal.value.user = true
-  // }])
+  list.push([{
+    label: 'Tài khoản',
+    icon: 'i-bx-user',
+    click: () => navigateTo('/user')
+  }])
 
   list.push([{
-    label: 'Lịch sử',
+    label: 'Đơn hàng',
     icon: 'i-bx-history',
-    click: () => modal.value.history = true
+    click: () => modal.value.order = true
   },{
     label: 'Đăng xuất',
     icon: 'i-bx-log-in',

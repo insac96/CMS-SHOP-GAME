@@ -10,7 +10,7 @@ export default async (event: H3Event, throwError : boolean = true) : Promise<IAu
     if(!token) throw 'Vui lòng đăng nhập trước'
 
     const decoded = jwt.verify(token, runtimeConfig.TOKEN_SECRET) as any
-    const user = await DB.User.findOne({ _id: decoded._id }).select('username block type token') as IDBUser
+    const user = await DB.User.findOne({ _id: decoded._id }).select('username block type token vip') as IDBUser
 
     if(!user) throw 'Xác thực tài khoản không thành công'
     if(user.token != token) {
@@ -23,7 +23,8 @@ export default async (event: H3Event, throwError : boolean = true) : Promise<IAu
     const result = { 
       _id: user._id,
       username: user.username,
-      type: user.type
+      type: user.type,
+      vip: user.vip
     }
     event.context.auth = result
     return result

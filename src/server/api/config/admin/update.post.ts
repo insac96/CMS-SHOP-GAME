@@ -12,6 +12,7 @@ export default defineEventHandler(async (event) => {
     if(change == 'basic') logAdmin(event, 'Cập nhật thông tin <b>cơ bản</b> trang web')
     if(change == 'contact') logAdmin(event, 'Cập nhật thông tin <b>liên hệ</b> trang web')
     if(change == 'social') logAdmin(event, 'Cập nhật thông tin <b>mạng xã hội</b> trang web')
+    if(change == 'vip') logAdmin(event, 'Cập nhật cấu hình <b>Giá VIP</b>')
     if(change == 'facebook') logAdmin(event, 'Cập nhật cấu hình <b>API Facebook</b>')
     if(change == 'google') logAdmin(event, 'Cập nhật cấu hình <b>API Google</b>')
     if(change == 'zalo') logAdmin(event, 'Cập nhật cấu hình <b>API Zalo</b>')

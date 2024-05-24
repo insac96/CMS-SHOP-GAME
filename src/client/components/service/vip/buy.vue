@@ -4,12 +4,12 @@
     
     <div v-else>
       <UForm ref="form" :state="state" :validate="validate" @submit="submit">
-        <UFormGroup label="Đơn hàng" name="game">
-          <UInput :value="game.name" readonly />
+        <UFormGroup label="Gói nâng cấp" name="vip">
+          <UInput :value="vip.title" readonly />
         </UFormGroup>
 
-        <UFormGroup label="Giá tiền" name="game">
-          <UInput :value="useMoney().toMoney(game.price.member)+' VNĐ'" readonly />
+        <UFormGroup label="Giá tiền" name="price">
+          <UInput :value="useMoney().toMoney(vip.price)+' VNĐ'" readonly />
         </UFormGroup>
 
         <UFormGroup label="Kênh thanh toán" name="gate">
@@ -23,7 +23,7 @@
       </UForm>
 
       <UModal v-model="modal.view" prevent-close>
-        <ServiceOrderView :fetch-id="order" class="p-4"/>
+        <ServiceVipView :fetch-id="order" class="p-4"/>
 
         <UiFlex justify="end" class="px-4 pb-4">
           <UButton color="gray" @click="modal.view = false, emits('done')">Đóng</UButton>
@@ -31,7 +31,7 @@
       </UModal>
 
       <UModal v-model="modal.history" :ui="{ width: 'lg:max-w-4xl md:max-w-2xl sm:max-w-xl' }">
-        <ServiceOrderHistory />
+        <ServiceVipHistory />
       </UModal>
     </div>
   </div>
@@ -39,7 +39,7 @@
 
 <script setup>
 const authStore = useAuthStore()
-const props = defineProps(['game'])
+const props = defineProps(['vip'])
 const emits = defineEmits(['done'])
 
 const form = ref()
@@ -53,7 +53,7 @@ const modal = ref({
 
 const state = ref({
   gate: null,
-  game: props.game._id
+  vip: props.vip.type
 })
 
 const validate = (st) => {
@@ -65,7 +65,7 @@ const validate = (st) => {
 const submit = async () => {
   try {
     loading.value = true
-    const data = await useAPI('order/create', JSON.parse(JSON.stringify(state.value)))
+    const data = await useAPI('vip/buy', JSON.parse(JSON.stringify(state.value)))
 
     order.value = data
     modal.value.view = true

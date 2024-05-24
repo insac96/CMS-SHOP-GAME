@@ -18,6 +18,13 @@ export interface IDBConfig {
   privacy: string
   terms: string
 
+  vip: {
+    month: number
+    quarter : number
+    year: number
+    forever: number
+  }
+
   contact: {
     name: string
     phone: string
@@ -82,10 +89,19 @@ export interface IDBConfigStore {
   }
 
   social: {
-    facebook: string
+    fanpage: string
+    group: string
     messenger: string
     zalo: string
+    tiktok: string
     telegram: string
+  }
+
+  vip: {
+    month: number
+    quarter : number
+    year: number
+    forever: number
   }
 
   facebook: {
