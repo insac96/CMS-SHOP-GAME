@@ -88,10 +88,22 @@
 </template>
 
 <script setup>
+const { img } = useMakeLink()
+const configStore = useConfigStore()
 const authStore = useAuthStore()
 const route = useRoute()
 const loading = ref(false)
 const game = ref(undefined)
+
+// Meta Seo
+useSeoMeta({
+  title: () => game.value ? `${game.value.name} - ${configStore.config.name}` : 'Loading...',
+  ogTitle: () => game.value ? `${game.value.name} - ${configStore.config.name}` : 'Loading...',
+  description: () => game.value ? game.value.description : 'Loading...',
+  ogDescription: () => game.value ? game.value.description : 'Loading...',
+  ogImage: () => game.value ? img(game.value.og_image) : 'Loading...',
+  ogImageAlt: () => game.value ? game.value.name : 'Loading...'
+})
 
 const modal = ref({
   buy: false,

@@ -41,30 +41,27 @@ export const DBConfig = (mongoose : Mongoose) => {
     },
 
     facebook: {
-      client_id: { type: String },
-      client_secret: { type: String },
-      client_version: { type: String },
-      client_verify: { type: String },
-      client_ads: { type: String },
+      client_id: { type: String, default: '' },
+      client_secret: { type: String, default: '' },
+      client_version: { type: String, default: '' },
+      client_verify: { type: String, default: '' },
+      client_ads: { type: String, default: '' },
     },
-  
     google: {
-      client_id: { type: String },
-      client_secret: { type: String },
-      client_verify: { type: String },
-      client_ads: { type: String },
+      client_id: { type: String, default: '' },
+      client_secret: { type: String, default: '' },
+      client_verify: { type: String, default: '' },
+      client_ads: { type: String, default: '' },
     },
-    
     tiktok: {
-      client_id: { type: String },
-      client_secret: { type: String },
-      client_verify: { type: String },
+      client_id: { type: String, default: '' },
+      client_secret: { type: String, default: '' },
+      client_verify: { type: String, default: '' },
     },
-  
     zalo: {
-      client_id: { type: String },
-      client_secret: { type: String },
-      client_verify: { type: String },
+      client_id: { type: String, default: '' },
+      client_secret: { type: String, default: '' },
+      client_verify: { type: String, default: '' },
     }
   }, {
     timestamps: true

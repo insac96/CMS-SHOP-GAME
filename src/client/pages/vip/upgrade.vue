@@ -41,6 +41,12 @@
 <script setup>
 const configStore = useConfigStore()
 
+// Meta Seo
+useSeoMeta({
+  title: () => `Nâng Cấp VIP - ${configStore.config.name}`,
+  ogTitle: () => `Nâng Cấp VIP - ${configStore.config.name}`,
+})
+
 const modal = ref(false)
 const selectVip = ref(false)
 

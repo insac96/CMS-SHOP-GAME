@@ -40,11 +40,13 @@ export const useConfigStore = defineStore('config', () => {
       client_id: '',
       client_version: '',
       client_verify: '',
+      client_ads: '',
     },
 
     google: {
       client_id: '',
       client_verify: '',
+      client_ads: '',
     },
 
     tiktok: {

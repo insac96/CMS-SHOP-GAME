@@ -3,8 +3,15 @@
 </template>
 
 <script setup>
+const configStore = useConfigStore()
 const route = useRoute()
 const platform = ref(undefined)
+
+// Meta Seo
+useSeoMeta({
+  title: () => platform.value ? `Nền Tảng ${platform.value.name} - ${configStore.config.name}` : 'Loading...',
+  ogTitle: () => platform.value ? `Nền Tảng ${platform.value.name} - ${configStore.config.name}` : 'Loading...',
+})
 
 const get = async () => {
   try {

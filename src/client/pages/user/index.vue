@@ -17,6 +17,15 @@
 </template>
 
 <script setup>
+const configStore = useConfigStore()
+
+// Meta Seo
+useSeoMeta({
+  title: () => `Tài Khoản - ${configStore.config.name}`,
+  ogTitle: () => `Tài Khoản - ${configStore.config.name}`,
+  robots: 'none'
+})
+
 const tab = ref(0)
 
 const items = [{

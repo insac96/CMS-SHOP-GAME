@@ -17,9 +17,21 @@
 </template>
 
 <script setup>
+const { img } = useMakeLink()
+const configStore = useConfigStore()
 const route = useRoute()
 const loading = ref(false)
 const news = ref(undefined)
+
+// Meta Seo
+useSeoMeta({
+  title: () => news.value ? `${news.value.title} - ${configStore.config.name}` : 'Loading...',
+  ogTitle: () => news.value ? `${news.value.title} - ${configStore.config.name}` : 'Loading...',
+  description: () => news.value ? news.value.description : 'Loading...',
+  ogDescription: () => news.value ? news.value.description : 'Loading...',
+  ogImage: () => news.value ? img(news.value.og_image) : 'Loading...',
+  ogImageAlt: () => news.value ? news.value.title : 'Loading...'
+})
 
 const getNews = async () => {
   try {
