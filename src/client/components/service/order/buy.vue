@@ -9,7 +9,7 @@
         </UFormGroup>
 
         <UFormGroup label="Giá tiền" name="game">
-          <UInput :value="useMoney().toMoney(game.price.member)+' VNĐ'" readonly />
+          <UInput :value="useMoney().toMoney(price)+' VNĐ'" readonly />
         </UFormGroup>
 
         <UFormGroup label="Kênh thanh toán" name="gate">
@@ -38,6 +38,7 @@
 </template>
 
 <script setup>
+const { dayjs } = useDayJs()
 const authStore = useAuthStore()
 const props = defineProps(['game'])
 const emits = defineEmits(['done'])
@@ -54,6 +55,20 @@ const modal = ref({
 const state = ref({
   gate: null,
   game: props.game._id
+})
+
+const price = computed(() => {
+  const userVip = authStore.profile.vip
+  const gamePrice = props.game.price
+
+  if(userVip.forever.enable == true) return gamePrice.vip.forever
+  if(userVip.month.enable == true) {
+    const end = dayjs(userVip.month.end).unix()
+    const now = dayjs(Date.now()).unix()
+    if(end >= now) return gamePrice.vip.month
+    else gamePrice.vip.member
+  }
+  return gamePrice.vip.member
 })
 
 const validate = (st) => {

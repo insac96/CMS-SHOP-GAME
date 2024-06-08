@@ -19,7 +19,7 @@ const handler = multer({
 
   fileFilter: (req, file, cb) => {
     const fileType = file.mimetype.split('/')[0]
-    if (fileType !== 'image') cb(new Error('Chỉ hỗ trợ tệp hình ảnh (jpg|jpeg|png|webp)'))
+    if (fileType !== 'image') cb(new Error('Chỉ hỗ trợ tệp hình ảnh (jpg|jpeg|png|webp|gif)'))
     else cb(null, true)
   }
 })

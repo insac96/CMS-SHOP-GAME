@@ -23,8 +23,8 @@ const onFileChange = async (e) => {
     if(files.length == 0) throw 'Vui lòng chọn hình ảnh trước'
 
     const file = files[0]
-    const isImage = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg' || file.type === 'image/webp'
-    if(!isImage) throw 'Chỉ hỗ trợ định dạng ảnh (jpg|jpeg|png|webp)'
+    const isImage = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg' || file.type === 'image/webp' || file.type === 'image/gif'
+    if(!isImage) throw 'Chỉ hỗ trợ định dạng ảnh (jpg|jpeg|png|webp|gif)'
 
     const is5M = file.size / 1024 / 1024 < 10
     if (!is5M) throw 'Chỉ hỗ trợ ảnh dung lượng nhỏ hơn 10MB'

@@ -24,10 +24,6 @@ export default defineAppConfig({
       }
     },
 
-    barge: {
-      rounded: 'rounded-xl',
-    },
-
     card: {
       base: 'relative overflow-y-auto',
       rounded: 'rounded-xl',
@@ -59,13 +55,15 @@ export default defineAppConfig({
     alert:{
       variant: {
         soft: 'bg-{color}-500 bg-opacity-10'
-      }
+      },
+      rounded: 'rounded-xl',
     },
 
     badge: {
       variant: {
         soft: 'bg-{color}-500 bg-opacity-10'
-      }
+      },
+      rounded: 'rounded-xl',
     },
 
     modal: {
@@ -73,7 +71,8 @@ export default defineAppConfig({
       overlay: {
         background: 'bg-white/25 dark:bg-black/50 backdrop-blur'
       },
-      base: 'overflow-x-hidden overflow-visible'
+      base: 'overflow-x-hidden overflow-visible',
+      rounded: 'rounded-xl',
     },
 
     slideover: {
@@ -111,7 +110,27 @@ export default defineAppConfig({
 
     select: {
       default: {
-        loadingIcon: 'i-bx-loader-alt'
+        loadingIcon: 'i-bx-loader-alt',
+        color: 'gray',
+        size: 'lg',
+      },
+      rounded: 'rounded-xl',
+      color: {
+        gray: {
+          outline: 'ring-0 bg-gray-100'
+        }
+      }
+    },
+
+    textarea: {
+      default: {
+        color: 'gray',
+      },
+      rounded: 'rounded-xl',
+      color: {
+        gray: {
+          outline: 'ring-0 bg-gray-100'
+        }
       }
     }
   }

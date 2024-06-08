@@ -21,6 +21,16 @@ export default defineEventHandler(async (event) => {
     }
     if(!!createNewLogin) await DB.LogLogin.create({ user: user._id })
 
+    // User Vip
+    if(user.vip.month.enable){
+      const end = DayJS(user.vip.month.end).unix()
+      const now = DayJS(Date.now()).unix()
+      if(end < now){
+        user.vip.month.enable = false
+        user.vip.month.end = null
+      }
+    }
+
     // Save
     await user.save()
 

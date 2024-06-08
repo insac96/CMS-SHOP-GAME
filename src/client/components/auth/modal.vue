@@ -29,6 +29,6 @@ const tab = ref(0)
 const tabs = [
   { label: 'Đăng Nhập', key: 'in' },
   { label: 'Đăng Ký', key: 'up' },
-  { label: 'Quên Mật Khẩu', key: 'fotgot' },
+  // { label: 'Quên Mật Khẩu', key: 'fotgot' },
 ]
 </script>
