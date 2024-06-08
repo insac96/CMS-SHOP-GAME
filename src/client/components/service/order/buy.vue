@@ -66,9 +66,9 @@ const price = computed(() => {
     const end = dayjs(userVip.month.end).unix()
     const now = dayjs(Date.now()).unix()
     if(end >= now) return gamePrice.vip.month
-    else gamePrice.vip.member
+    else gamePrice.member
   }
-  return gamePrice.vip.member
+  return gamePrice.member
 })
 
 const validate = (st) => {
