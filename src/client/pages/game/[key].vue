@@ -1,6 +1,6 @@
 <template>
   <div class="max-w-4xl mx-auto">
-    <div v-if="loading || !game">Loading...</div>
+    <LoadingGameId v-if="loading || !game" />
     
     <div v-else>
       <!-- Info -->

@@ -1,7 +1,8 @@
 <template>
-  <div v-if="loading || !news">Loading...</div>
+  <div class="max-w-3xl mx-auto">
+    <LoadingNewsId v-if="loading || !news" />
 
-  <UiFlex v-else type="col" justify="center" class="max-w-3xl mx-auto">
+    <UiFlex v-else type="col" justify="center">
       <UiSlide :images="news.images" class="mb-4" />
 
       <div class="mb-4">
@@ -13,7 +14,8 @@
       <div class="mb-4 w-full">
         <DataEditor :content="news.content" empty="Chưa có nội dung"></DataEditor>
       </div>
-  </UiFlex>
+    </UiFlex>
+  </div>
 </template>
 
 <script setup>
