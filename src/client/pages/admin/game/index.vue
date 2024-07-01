@@ -355,6 +355,7 @@ watch(() => modal.value.add, (val) => !val && (stateAdd.value = {
   short_name: null,
   description: null,
   og_image: null,
+  images: [],
   price: {
     member: 0,
     vip: {

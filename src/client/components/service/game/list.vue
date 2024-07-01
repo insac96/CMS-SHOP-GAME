@@ -45,6 +45,7 @@ const page = ref({
   },
   total: 0
 })
+watch(() => page.value.current, () => get())
 
 const list = ref(undefined)
 const loading = ref(true)
